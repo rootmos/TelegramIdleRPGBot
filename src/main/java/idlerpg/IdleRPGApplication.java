@@ -31,14 +31,14 @@ public class IdleRPGApplication extends Application<IdleRPGConfiguration> {
 
         final Client client = new JerseyClientBuilder(environment)
             .using(configuration.getJerseyClientConfiguration())
-            .build("Telegram API client");
+            .build(getName());
 
         final HelloScalaResource scalaResource = new HelloScalaResource();
         environment.jersey().register(scalaResource);
 
         final String token = configuration.getToken();
         final TelegramAPICheck telegramAPICheck = new TelegramAPICheck(client, token);
-        environment.healthChecks().register("Telegram API check", telegramAPICheck);
+        environment.healthChecks().register(telegramAPICheck.name(), telegramAPICheck);
     }
 
 }

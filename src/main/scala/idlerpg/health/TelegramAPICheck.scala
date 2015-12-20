@@ -13,6 +13,8 @@ class TelegramAPICheck(client: Client, token: String) extends HealthCheck {
   val telegramAPI = client.target("https://api.telegram.org/bot" + token)
   val getMe = telegramAPI path "getMe" request MediaType.APPLICATION_JSON
 
+  def name = "Telegram API Check"
+
   override def check() = getMe.get(classOf[TelegramResult]) match {
     case TelegramResult(true, _) => Result.healthy()
     case _ => Result.unhealthy("Telegram API did not return ok!")
