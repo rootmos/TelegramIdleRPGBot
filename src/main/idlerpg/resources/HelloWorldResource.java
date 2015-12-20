@@ -28,6 +28,11 @@ public class HelloWorldResource {
     @Timed
     public Saying sayHello(@QueryParam("name") Optional<String> name) {
         final String value = String.format(template, name.or(defaultName));
+
+        java.util.Random rand = new java.util.Random();
+        if (rand.nextInt(9) == 0)
+            throw new RuntimeException("Oh noo!");
+
         return new Saying(counter.incrementAndGet(), value);
     }
 }
