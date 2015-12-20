@@ -3,11 +3,13 @@ package idlerpg;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import idlerpg.resources.HelloWorldResource;
 import idlerpg.resources.HelloScalaResource;
-import idlerpg.health.TemplateHealthCheck;
+import idlerpg.health.TelegramAPICheck;
 
 import com.fasterxml.jackson.module.scala.DefaultScalaModule$;
+
+import io.dropwizard.client.JerseyClientBuilder;
+import javax.ws.rs.client.Client;
 
 public class IdleRPGApplication extends Application<IdleRPGConfiguration> {
     public static void main(String[] args) throws Exception {
@@ -16,7 +18,7 @@ public class IdleRPGApplication extends Application<IdleRPGConfiguration> {
 
     @Override
     public String getName() {
-        return "hello-world";
+        return "idlerpg-bot";
     }
 
     @Override
@@ -27,16 +29,16 @@ public class IdleRPGApplication extends Application<IdleRPGConfiguration> {
     public void run(IdleRPGConfiguration configuration, Environment environment) {
         environment.getObjectMapper().registerModule(DefaultScalaModule$.MODULE$);
 
-        final HelloWorldResource resource = new HelloWorldResource(
-                configuration.getTemplate(),
-                configuration.getDefaultName());
-        environment.jersey().register(resource);
+        final Client client = new JerseyClientBuilder(environment)
+            .using(configuration.getJerseyClientConfiguration())
+            .build("Telegram API client");
 
         final HelloScalaResource scalaResource = new HelloScalaResource();
         environment.jersey().register(scalaResource);
 
-        final TemplateHealthCheck healthCheck = new TemplateHealthCheck(configuration.getTemplate());
-        environment.healthChecks().register("template", healthCheck);
+        final String token = configuration.getToken();
+        final TelegramAPICheck telegramAPICheck = new TelegramAPICheck(client, token);
+        environment.healthChecks().register("Telegram API check", telegramAPICheck);
     }
 
 }

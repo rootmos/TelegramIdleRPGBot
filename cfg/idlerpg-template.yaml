@@ -1,12 +1,11 @@
-template: Hello, %s!
-defaultName: Stranger
+token: %TOKEN%
 
 server:
     applicationConnectors:
         - type: https
           port: 8443
-          keyStorePath: cert/localhost.jks
-          keyStorePassword: foobar123
+          keyStorePath: %KEYSTORE%
+          keyStorePassword: %PASSWORD%
           validateCerts: false
     requestLog:
         timeZone: UTC

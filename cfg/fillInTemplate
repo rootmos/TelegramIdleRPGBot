@@ -1,0 +1,16 @@
+#!/bin/bash
+
+
+template=$(readlink -f $0 | xargs dirname)/idlerpg-template.yaml
+
+token=$1
+keystore=$2
+password=$3
+
+output=idlerpg.yaml
+
+cp $template $output
+sed -i "s#%TOKEN%#$token#" $output
+sed -i "s#%KEYSTORE%#$keystore#" $output
+sed -i "s#%PASSWORD%#$password#" $output
+
