@@ -2,6 +2,12 @@ template: Hello, %s!
 defaultName: Stranger
 
 server:
+    applicationConnectors:
+        - type: https
+          port: 8443
+          keyStorePath: cert/localhost.jks
+          keyStorePassword: foobar123
+          validateCerts: false
     requestLog:
         timeZone: UTC
         appenders:
