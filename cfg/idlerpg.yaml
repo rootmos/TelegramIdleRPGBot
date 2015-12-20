@@ -1,2 +1,29 @@
 template: Hello, %s!
 defaultName: Stranger
+
+server:
+    requestLog:
+        timeZone: UTC
+        appenders:
+            - type: file
+              currentLogFilename: requests.log
+              threshold: ALL
+              archive: true
+              archivedLogFilenamePattern: requests-%d.log
+              archivedFileCount: 5
+              timeZone: UTC
+
+logging:
+    level: INFO
+    appenders:
+        - type: console
+          threshold: INFO
+          timeZone: UTC
+          target: stdout
+        - type: file
+          currentLogFilename: idlerpg.log
+          threshold: ALL
+          archive: true
+          archivedLogFilenamePattern: idlerpg-%d.log
+          archivedFileCount: 5
+          timeZone: UTC
