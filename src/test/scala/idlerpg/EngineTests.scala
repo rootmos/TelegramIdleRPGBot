@@ -1,9 +1,15 @@
-import idlerpg.{Observable, Observer}
+import idlerpg.{Observable, Observer, Entity}
 import org.scalatest._
+
+object Salt {
+  private val rnd = new scala.util.Random
+  private val length = 5
+  def get = rnd.nextString(length)
+}
 
 class ObservableSpec extends FlatSpec with Matchers {
 
-  val apperance = "Foobar!"
+  val apperance = Salt.get
   val o: Observable = new Observable {
     def observe = apperance
   }
@@ -23,7 +29,7 @@ class ObservableSpec extends FlatSpec with Matchers {
 
 class ObserverSpec extends FlatSpec with Matchers {
 
-  def observable(apperance: String) = new Observable { def observe = apperance }
+  def observable = new Observable { val apperance = Salt.get; def observe = apperance }
 
   "An Observer" should "return an iterator of Observables" in {
     val observer = new Observer { def observables = List[Observable]() }
@@ -31,14 +37,29 @@ class ObserverSpec extends FlatSpec with Matchers {
   }
 
   it should "return the correct list of Observables" in {
-    val a = observable("a")
-    val b = observable("b")
-    val c = observable("c")
+    val a = observable
+    val b = observable
+    val c = observable
     val observer = new Observer { def observables = List[Observable](a, b) }
 
     observer.observables should contain (a)
     observer.observables should contain (b)
     observer.observables should not contain (c)
+  }
+
+}
+
+class EntitySpec extends FlatSpec with Matchers {
+
+  def entity = new Entity { val identity = Salt.get; def id = identity }
+
+  "An Entity" should "have an identity" in {
+    val e = entity
+    e.id should be (e.identity)
+  }
+
+  it should "have a String as its identity" in {
+    entity.id shouldBe a [String]
   }
 
 }

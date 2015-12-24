@@ -3,7 +3,8 @@ package idlerpg
 import scala.collection.Iterable
 
 abstract class Entity {
-  val id: String
+  type ID = String
+  def id: ID
 }
 
 trait Observer {
