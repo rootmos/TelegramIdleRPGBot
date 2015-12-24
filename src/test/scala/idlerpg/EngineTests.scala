@@ -58,8 +58,8 @@ class EntitySpec extends FlatSpec with Matchers {
     e.id should be (e.identity)
   }
 
-  it should "have a String as its identity" in {
-    entity.id shouldBe a [String]
+  it should "have an identity with the correct type" in {
+    entity.id shouldBe a [Entity.ID]
   }
 
 }

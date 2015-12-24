@@ -2,8 +2,12 @@ package idlerpg
 
 import scala.collection.Iterable
 
-abstract class Entity {
+object Entity {
   type ID = String
+}
+
+abstract class Entity {
+  import Entity._
   def id: ID
 }
 
