@@ -11,6 +11,10 @@ abstract class Entity {
   def id: ID
 }
 
+trait EntityStore {
+  def get(id: Entity.ID): Option[Entity]
+}
+
 trait Observer {
   def observables: Iterable[Observable]
 }
