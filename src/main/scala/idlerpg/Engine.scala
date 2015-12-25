@@ -9,6 +9,9 @@ object Entity {
 abstract class Entity {
   import Entity._
   def id: ID
+
+  override def equals(other: Any) = other.isInstanceOf[Entity] && id == other.asInstanceOf[Entity].id
+  override def hashCode = id.hashCode
 }
 
 trait EntityStore {

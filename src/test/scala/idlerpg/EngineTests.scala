@@ -64,6 +64,16 @@ class EntitySpec extends FlatSpec with Matchers {
     entity.id shouldBe a [Entity.ID]
   }
 
+  it should "be equal to Entities with the same id" in {
+    val id = Salt.get
+
+    val entityA = Salt.entity(id)
+    val entityB = Salt.entity(id)
+
+    entityA should be (entityB)
+    entityA should not be theSameInstanceAs (entityB)
+  }
+
 }
 
 class EntityStoreSpec extends FlatSpec with Matchers {
