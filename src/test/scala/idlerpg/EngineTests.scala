@@ -86,6 +86,7 @@ class EntityStoreSpec extends FlatSpec with Matchers {
     }
 
     def get(id: Entity.ID) = entities.get(id)
+    def put(entity: Entity) = entities += (entity.id -> entity)
   }
 
   "The get method" should "return the same instance wrapped in Some" in {
@@ -101,6 +102,16 @@ class EntityStoreSpec extends FlatSpec with Matchers {
   it should "return None if the Entity does not exist" in {
     val store = entityStore(Nil)
     store.get(Salt.get) should be (None)
+  }
+
+  "The put method" should "be able to save an entity" in {
+    val e = Salt.entity()
+    val store = entityStore(Nil)
+    store.put(e)
+    store.get(e.id) match {
+      case Some(x) => x should be theSameInstanceAs e
+      case None => fail("Entity not found!")
+    }
   }
 
 }

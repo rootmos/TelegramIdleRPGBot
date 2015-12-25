@@ -16,6 +16,7 @@ abstract class Entity {
 
 trait EntityStore {
   def get(id: Entity.ID): Option[Entity]
+  def put(entity: Entity)
 }
 
 trait Observer {
